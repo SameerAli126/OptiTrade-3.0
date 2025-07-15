@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { signupUser, verifyUserOTP } from "@/services/AuthServices";
-import FormField from "@/app/components/auth/FormField";
-import PasswordField from "@/app/components/auth/PasswordField";
+import FormField from "@/app/(public)/(auth)/FormField";
+import PasswordField from "@/app/(public)/(auth)/PasswordField";
 
 export default function SignupPage() {
     const [step, setStep] = useState<'signup' | 'verify'>('signup');
