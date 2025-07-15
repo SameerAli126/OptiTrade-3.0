@@ -1,5 +1,5 @@
 // File: app/services/authService.ts
-import { LOGIN, SIGNUP, VERIFY_OTP } from "@/app/config/apiEndpoints";
+import { LOGIN, SIGNUP, VERIFY_OTP, FORGOT_PASSWORD, VERIFY_RESET_OTP } from "@/app/config/apiEndpoints";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
@@ -34,5 +34,21 @@ export const verifyUserOTP = async (otpData: { email: string, otp: string }) => 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(otpData),
+    });
+};
+
+export const requestPasswordReset = async (email: string) => {
+    return apiCall(FORGOT_PASSWORD, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+    });
+};
+
+export const verifyResetOTP = async (email: string, otp: string, newPassword: string) => {
+    return apiCall(VERIFY_RESET_OTP, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp, new_password: newPassword }),
     });
 };

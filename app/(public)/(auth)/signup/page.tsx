@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { signupUser, verifyUserOTP } from "@/services/AuthServices";
-import FormField from "@/app/compo";
+import FormField from "@/app/components/auth/FormField";
 import PasswordField from "@/app/components/auth/PasswordField";
 
 export default function SignupPage() {
