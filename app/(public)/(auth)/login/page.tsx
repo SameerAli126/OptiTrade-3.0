@@ -10,7 +10,7 @@ import { loginUser, requestPasswordReset, verifyResetOTP } from "@/services/Auth
 import FormField from "@/app/(public)/(auth)/FormField";
 import PasswordField from "@/app/(public)/(auth)/PasswordField";
 import ForgotPasswordForm from "@/app/(public)/(auth)/ForgotPasswordForm";
-import LoginImage from "/public/img/LoginImage.jpg";
+import LoginImage from "@/app//assets/img/LoginImage.jpg";
 
 type View = 'login' | 'forgot_request' | 'forgot_reset';
 
