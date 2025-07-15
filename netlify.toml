@@ -1,0 +1,9 @@
+# This is the main configuration file for Netlify
+
+[build]
+  # This tells Netlify the command to run to build your site.
+  command = "next build"
+
+  # This tells Netlify where to find the finished website files.
+  # For Next.js, this is always the ".next" folder.
+  publish = ".next"
