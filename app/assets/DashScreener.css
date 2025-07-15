@@ -1,0 +1,82 @@
+/* DashScreener.css */
+.custom-grid {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: white;
+}
+
+/* Header Styles */
+.custom-grid .e-headercell {
+    background-color: #086EBA;
+    color: black;
+    font: 600 16px/1.5 'Segoe UI', sans-serif;
+    padding: 16px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #055a9e;
+}
+
+/* Row & Cell Styles */
+.custom-grid .e-row {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-grid .e-row:hover {
+    background-color: #f5f9fd;
+}
+
+.custom-grid .e-altrow {
+    background-color: #f9f9f9;
+}
+
+.custom-grid .e-rowcell {
+    padding: 12px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Symbol Column Specific */
+.custom-grid .e-rowcell img {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    border-radius: 50%;
+}
+
+.custom-grid .e-rowcell span {
+    color: #086EBA;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.custom-grid .e-rowcell span:hover {
+    color: #055a9e;
+}
+
+/* Pager Styles */
+.custom-grid .e-pager {
+    background-color: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+    padding: 12px;
+    border-radius: 0 0 12px 12px;
+}
+
+.custom-grid .e-pager .e-numericitem {
+    color: #086EBA;
+    border: 1px solid #086EBA;
+    border-radius: 6px;
+    margin: 0 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.custom-grid .e-pager .e-numericitem:hover,
+.custom-grid .e-pager .e-numericitem.e-currentitem {
+    background-color: #086EBA;
+    color: white;
+}

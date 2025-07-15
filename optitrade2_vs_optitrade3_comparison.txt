@@ -1,0 +1,178 @@
+# OptiTrade 2 vs OptiTrade 3 Comparison
+
+This document outlines the features, components, and functionality that exist in OptiTrade 2 (React Vite) but are missing or implemented differently in OptiTrade 3 (Next.js TypeScript).
+
+## Context Implementation
+
+### Successfully Implemented
+- ✅ AuthContext - Authentication context with login/logout functionality
+- ✅ ContextProvider - Main application state context
+- ✅ StockDataContext - Stock data fetching and state management
+- ✅ API Endpoints configuration
+- ✅ AppProviders wrapper for all contexts
+- ✅ Custom hook for accessing all contexts (use-app-context.ts)
+
+### Missing or Incomplete
+- ❌ Integration with actual components - The contexts are set up but not fully utilized in components
+- ❌ Theme implementation may differ between projects (Tailwind vs custom CSS)
+
+## Features Missing in OptiTrade 3
+
+### Authentication
+- ❌ Complete authentication flow (login, signup, forgot password)
+- ❌ OTP verification
+- ❌ Token refresh mechanism
+
+### Dashboard
+- ❌ Cash balance display from context (currently hardcoded in trade page)
+- ❌ Portfolio value display
+- ❌ Net worth calculation and display
+
+### Trading
+- ❌ Real portfolio management
+- ❌ Transaction history
+- ❌ Buy/sell functionality connected to the backend
+- ✅ Watchlist functionality (add/remove stocks)
+
+### UI/UX
+- ❌ Theme settings panel
+- ❌ Sidebar color customization
+- ❌ Dark/light mode toggle UI (though the context is implemented)
+- ❌ Responsive sidebar toggle
+
+## Implemented Features
+
+### Watchlist Functionality
+The watchlist functionality has been fully implemented with the following components:
+
+1. **WatchlistService**: A service that provides functions to interact with the watchlist API endpoints:
+   - `getWatchlist`: Fetches the user's watchlist from the API
+   - `addToWatchlist`: Adds a stock to the user's watchlist
+   - `removeFromWatchlist`: Removes a stock from the user's watchlist
+   - `getWatchlistWithFullData`: Fetches full stock data for all stocks in the watchlist
+
+2. **WatchlistContext**: A context that provides the watchlist state and functions to components:
+   - `watchlist`: An array of stocks in the user's watchlist
+   - `isLoading`: A boolean indicating whether the watchlist is loading
+   - `error`: An error object if there was an error fetching the watchlist
+   - `addToWatchlist`: A function to add a stock to the watchlist
+   - `removeFromWatchlist`: A function to remove a stock from the watchlist
+   - `isInWatchlist`: A function to check if a stock is in the watchlist
+   - `refreshWatchlist`: A function to refresh the watchlist data
+
+3. **WatchlistPage**: A page that displays the user's watchlist and allows them to:
+   - View details of stocks in the watchlist
+   - Remove stocks from the watchlist
+   - Navigate to the trade page for a stock
+
+4. **Integration with Trade Page**: The trade page has been updated to use the watchlist context:
+   - Add stocks to the watchlist
+   - Remove stocks from the watchlist
+   - Check if a stock is in the watchlist
+
+## Implementation Differences
+
+### Architecture
+- OptiTrade 2: React Vite with client-side routing
+- OptiTrade 3: Next.js with App Router and server components
+
+### State Management
+- OptiTrade 2: Context API only
+- OptiTrade 3: Context API + potential for server state
+
+### API Calls
+- OptiTrade 2: Direct API calls with axios
+- OptiTrade 3: Can use Next.js API routes, server components, or client-side fetching
+
+### Styling
+- OptiTrade 2: Likely uses Tailwind CSS directly
+- OptiTrade 3: Uses shadcn/ui components with Tailwind CSS
+
+## Next Steps for Feature Parity
+
+1. **Authentication Implementation**
+   - Create login/signup pages using the AuthContext
+   - Implement protected routes
+
+2. **Dashboard Components**
+   - Update dashboard to use balanceDetails from context
+   - Implement portfolio overview components
+
+3. **Trading Functionality**
+   - Connect buy/sell page to the context
+   - ✅ Implement watchlist functionality
+   - Create transaction history page
+
+4. **UI/UX Enhancements**
+   - Implement theme settings panel
+   - Add responsive sidebar
+   - Create user profile dropdown
+
+5. **Data Fetching**
+   - Implement proper data fetching strategies using Next.js patterns
+   - Consider using SWR or React Query for client-side data fetching
+
+## Usage Instructions
+
+To use the implemented contexts in OptiTrade 3:
+
+1. **Access Auth Context:**
+   ```typescript
+   import { useAuth } from '@/contexts/AuthContext';
+
+   function MyComponent() {
+     const { user, isAuthenticated, login, logout } = useAuth();
+     // Use auth functions and state
+   }
+   ```
+
+2. **Access State Context:**
+   ```typescript
+   import { useStateContext } from '@/contexts/ContextProvider';
+
+   function MyComponent() {
+     const { 
+       currentColor, 
+       currentMode, 
+       balanceDetails,
+       refreshCashBalance 
+     } = useStateContext();
+     // Use state functions and values
+   }
+   ```
+
+3. **Access Stock Data:**
+   ```typescript
+   import { useStockData } from '@/contexts/StockDataContext';
+
+   function MyComponent() {
+     const { stockData, isLoading, error } = useStockData();
+     // Use stock data
+   }
+   ```
+
+4. **Access Watchlist Context:**
+   ```typescript
+   import { useWatchlist } from '@/contexts/WatchlistContext';
+
+   function MyComponent() {
+     const { 
+       watchlist, 
+       isLoading, 
+       addToWatchlist, 
+       removeFromWatchlist, 
+       isInWatchlist 
+     } = useWatchlist();
+     // Use watchlist functions and data
+   }
+   ```
+
+5. **Use Combined Context Hook:**
+   ```typescript
+   import { useAppContext } from '@/hooks/use-app-context';
+
+   function MyComponent() {
+     const { auth, state, stockData, watchlist } = useAppContext();
+     // Access all contexts through a single hook
+   }
+   ```

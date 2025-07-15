@@ -1,0 +1,33 @@
+.dashboard-panel {
+    background-color: #f8f9fa; /* Light background color */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-panel ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dashboard-panel li {
+    padding: 10px 15px;
+    margin: 5px 0;
+    background-color: #ffffff; /* White background for each item */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-panel li:hover {
+    background-color: #e9ecef; /* Slightly darker background on hover */
+}
+
+.dashboard-panel li:active {
+    background-color: #dee2e6; /* Even darker background when active */
+}
+
+.dashboard-panel li + li {
+    margin-top: 5px; /* Space between list items */
+}

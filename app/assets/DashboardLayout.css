@@ -1,0 +1,25 @@
+/* DashboardLayout.css */
+
+.sidebar {
+    transition: width 0.3s ease; /* Smooth transition for sidebar */
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 40%; /* Full width on small screens */
+    }
+    .navbar {
+        position: relative; /* Change to relative on small screens */
+    }
+    .main-content {
+        margin-left: 0; /* No margin when sidebar is hidden */
+    }
+}
+
+.bg-main-bg {
+    background-color: #f9f9f9; /* Light background for main content */
+}
+
+.dark .bg-main-dark-bg {
+    background-color: #1e1e1e; /* Dark background for main content */
+}
