@@ -1,12 +1,25 @@
 # File: netlify.toml
 
+# [build] and [plugins] are for when Netlify deploys your site in the cloud.
 [build]
-command = "next build"
-publish = ".next"
+  command = "next build"
+  publish = ".next"
 
-# This is the proxy rule for Netlify's server.
-# It tells Netlify: "Any request to /api/* should be sent to the destination URL."
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# [[redirects]] is for when your site is LIVE on Netlify's servers.
+# It tells Netlify's network how to proxy requests.
 [[redirects]]
-from = "/api/*"
-to = "https://archlinux.tail9023a4.ts.net/:splat"
-status = 200 # This makes it a rewrite (proxy), not a 301/302 redirect.
+  from = "/api/*"
+  to = "https://archlinux.tail9023a4.ts.net/:splat"
+  status = 200
+
+# [dev] is for when you run your site LOCALLY using `netlify dev`.
+# This is the modern way to replace the `next.config.js` rewrites.
+[dev]
+  # This tells the local Netlify server to proxy /api/* requests.
+  [[redirects]]
+    from = "/api/*"
+    to = "https://archlinux.tail9023a4.ts.net/:splat"
+    status = 200
