@@ -1,6 +1,6 @@
 // File: app/services/authService.ts
 import { LOGIN, SIGNUP, VERIFY_OTP, FORGOT_PASSWORD, VERIFY_RESET_OTP } from "@/app/config/apiEndpoints";
-///
+////
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 // A generic function to handle API calls and errors

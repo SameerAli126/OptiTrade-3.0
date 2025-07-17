@@ -28,7 +28,9 @@ export const REMOVE_FROM_WATCHLIST = (userId: string, symbol: string) => `/watch
 export const GET_TRANSACTION_HISTORY = `/transactions`;
 
 // User
+export const USERS_ENDPOINT = 'https://archlinux.tail9023a4.ts.net/users';
 export const USER_BALANCE = (userId: string) => `/users/${userId}/balance`;
+export const GET_USER = (userId: string) => `/users/${userId}`;
 
 // Stock Prices
 export const ALL_STOCK_PRICES = `/stocks/prices`;

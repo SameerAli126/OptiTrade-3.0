@@ -3,6 +3,7 @@
 ///
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
+import { USERS_ENDPOINT, GET_USER } from "@/config/apiEndpoints";
 
 // User object shape
 interface User {
@@ -21,6 +22,8 @@ interface AuthContextType {
     logout: () => void;
     checkAuthStatus: () => void;
     getUser: () => User | null;
+    fetchUserData: (userId: string) => Promise<User | null>;
+    fetchAllUsers: () => Promise<User[]>;
 }
 
 interface AuthProviderProps {
@@ -36,22 +39,61 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     const getUser = () => user;
 
+    // Fetch all users from the API
+    const fetchAllUsers = async (): Promise<User[]> => {
+        try {
+            const response = await fetch(USERS_ENDPOINT);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch users: ${response.status}`);
+            }
+            const users = await response.json();
+            return users;
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            return [];
+        }
+    };
+
+    // Fetch a specific user's data by ID
+    const fetchUserData = async (userId: string): Promise<User | null> => {
+        try {
+            // First try to get from all users endpoint
+            const allUsers = await fetchAllUsers();
+            const foundUser = allUsers.find(u => u.id.toString() === userId);
+
+            if (foundUser) {
+                return foundUser;
+            }
+
+            // If not found, try the specific user endpoint
+            const response = await fetch(`${USERS_ENDPOINT}/${userId}`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch user: ${response.status}`);
+            }
+            const userData = await response.json();
+            return userData;
+        } catch (error) {
+            console.error(`Error fetching user ${userId}:`, error);
+            return null;
+        }
+    };
+
     useEffect(() => {
         checkAuthStatus();
     }, []);
 
-    const checkAuthStatus = () => {
+    const checkAuthStatus = async () => {
         setIsLoading(true); // <- Start loading
         const token = localStorage.getItem("token");
 
         if (token) {
             try {
-                let userData: User;
+                let basicUserData: User;
                 if (token === "dummy-token") {
-                    userData = {
-                        id: "dev-user",
-                        u_name: "Developer",
-                        email: "dev@example.com"
+                    basicUserData = {
+                        id: "1", // Using ID 1 to match the first user in the example response
+                        u_name: "Sameer Khan",
+                        email: "khsameer626@gmail.com"
                     };
                 } else {
                     const decoded = jwtDecode<{
@@ -60,14 +102,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
                         email: string;
                         [key: string]: any;
                     }>(token);
-                    userData = {
+                    basicUserData = {
                         id: decoded.id,
                         u_name: decoded.u_name,
                         email: decoded.email
                     };
                 }
 
-                setUser(userData);
+                // Try to fetch complete user data from API
+                try {
+                    const completeUserData = await fetchUserData(basicUserData.id);
+                    if (completeUserData) {
+                        setUser(completeUserData);
+                    } else {
+                        setUser(basicUserData);
+                    }
+                } catch (error) {
+                    console.error("Error fetching complete user data:", error);
+                    setUser(basicUserData);
+                }
+
                 setIsAuthenticated(true);
             } catch (error) {
                 console.error("Invalid token:", error);
@@ -78,12 +132,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setIsLoading(false); // <- Done loading
     };
 
-    const login = (token: string, userData?: any) => {
+    const login = async (token: string, userData?: any) => {
         localStorage.setItem("token", token);
+        setIsLoading(true);
 
-        let authUser: User;
+        let basicUserData: User;
         if (token === "dummy-token") {
-            authUser = userData;
+            basicUserData = {
+                id: "1", // Using ID 1 to match the first user in the example response
+                u_name: "Sameer Khan",
+                email: "khsameer626@gmail.com",
+                ...userData
+            };
         } else {
             const decoded = jwtDecode<{
                 id: string;
@@ -91,7 +151,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 email: string;
                 [key: string]: any;
             }>(token);
-            authUser = {
+            basicUserData = {
                 id: decoded.id,
                 u_name: decoded.u_name,
                 email: decoded.email,
@@ -99,7 +159,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
             };
         }
 
-        setUser(authUser);
+        // Try to fetch complete user data from API
+        try {
+            const completeUserData = await fetchUserData(basicUserData.id);
+            if (completeUserData) {
+                setUser(completeUserData);
+            } else {
+                setUser(basicUserData);
+            }
+        } catch (error) {
+            console.error("Error fetching complete user data:", error);
+            setUser(basicUserData);
+        }
+
         setIsAuthenticated(true);
         setIsLoading(false);
     };
@@ -120,7 +192,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 login,
                 logout,
                 checkAuthStatus,
-                getUser
+                getUser,
+                fetchUserData,
+                fetchAllUsers
             }}
         >
             {children}
